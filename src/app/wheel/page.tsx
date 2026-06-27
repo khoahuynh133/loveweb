@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Sparkles, CheckCircle2 } from "lucide-react";
+import { Heart, Sparkles, CheckCircle2, Disc3 } from "lucide-react";
 import confetti from "canvas-confetti";
 
 // ==========================================
 // CONFIGURATION
 // ==========================================
 // Bạn có thể thay link ảnh món quà thật vào đây (vd: link ảnh facebook, imgur, unsplash...)
-const GIFT_IMAGE_URL = "photos/qua.webp"; 
-const GIFT_NAME = "Túi xách Cow&Kitty "; 
+const GIFT_IMAGE_URL = "photos/qua.webp";
+const GIFT_NAME = "Túi xách Cow&Kitty ";
 const GIFT_MESSAGE = "Hy vọng món quà nhỏ này sẽ khiến em mỉm cười. Cảm ơn vì đã xuất hiện trong cuộc đời anh.";
 
 // ==========================================
@@ -20,12 +20,12 @@ const GIFT_MESSAGE = "Hy vọng món quà nhỏ này sẽ khiến em mỉm cư�
 const CinematicBackground = () => (
   <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-[#FFF9FB]">
     {/* Ambient Aurora Blooms */}
-    <motion.div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFE4EC] mix-blend-multiply blur-[120px] opacity-60" animate={{ x: [0, 40, 0], y: [0, 50, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
-    <motion.div className="absolute bottom-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[#FFD6E7] mix-blend-multiply blur-[140px] opacity-50" animate={{ x: [0, -40, 0], y: [0, -50, 0] }} transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }} />
-    <motion.div className="absolute top-[30%] left-[30%] w-[50vw] h-[50vw] rounded-full bg-[#FF85B3]/20 mix-blend-multiply blur-[100px] opacity-40" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
-    
+    <motion.div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFE4EC]/60 blur-[60px]" animate={{ x: [0, 40, 0], y: [0, 50, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
+    <motion.div className="absolute bottom-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[#FFD6E7]/50 blur-[60px]" animate={{ x: [0, -40, 0], y: [0, -50, 0] }} transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }} />
+    <motion.div className="absolute top-[30%] left-[30%] w-[50vw] h-[50vw] rounded-full bg-[#FF85B3]/20 blur-[50px]" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
+
     {/* Sparkling Stars */}
-    {[...Array(25)].map((_, i) => (
+    {[...Array(8)].map((_, i) => (
       <motion.div
         key={`star-${i}`}
         className="absolute rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]"
@@ -36,7 +36,7 @@ const CinematicBackground = () => (
     ))}
 
     {/* Floating Ambient Particles */}
-    {[...Array(15)].map((_, i) => (
+    {[...Array(6)].map((_, i) => (
       <motion.div
         key={`particle-${i}`}
         className="absolute bg-[#FF4D8D]/10 rounded-full blur-[2px]"
@@ -46,6 +46,22 @@ const CinematicBackground = () => (
       />
     ))}
   </div>
+);
+
+const MusicControl = ({ isPlaying, toggleAudio }: any) => (
+  <motion.button
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    onClick={toggleAudio}
+    className="fixed top-6 right-6 z-50 flex items-center gap-3 px-4 py-2 bg-black/5 backdrop-blur-md border border-[#FF4D8D]/20 rounded-full text-black hover:bg-black/10 transition-all cursor-pointer group shadow-sm"
+  >
+    <div className={`relative flex items-center justify-center w-8 h-8 rounded-full bg-white/80 shadow-sm ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+      <Disc3 size={18} className="text-[#FF4D8D]" />
+    </div>
+    <span className="text-xs font-inter font-medium tracking-widest uppercase opacity-70 group-hover:opacity-100 transition-opacity hidden sm:block text-[#1F2937]">
+      {isPlaying ? "Music On" : "Music Off"}
+    </span>
+  </motion.button>
 );
 
 const PremiumButton = ({ onClick, disabled, loading, children, icon: Icon }: any) => (
@@ -58,10 +74,10 @@ const PremiumButton = ({ onClick, disabled, loading, children, icon: Icon }: any
   >
     {/* Animated Gradient Border Glow */}
     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FF4D8D] via-[#FF85B3] to-[#FF4D8D] opacity-10 group-hover:opacity-20 transition-opacity duration-500" />
-    
+
     {/* Shine effect */}
     <div className="absolute inset-0 translate-x-[-150%] group-hover:translate-x-[150%] bg-gradient-to-r from-transparent via-white/60 to-transparent skew-x-[-20deg] transition-transform duration-[1200ms] ease-in-out" />
-    
+
     <div className="relative flex items-center justify-center gap-3 z-10">
       {loading ? (
         <div className="w-6 h-6 border-4 border-[#FF4D8D]/30 border-t-[#FF4D8D] rounded-full animate-spin" />
@@ -75,95 +91,62 @@ const PremiumButton = ({ onClick, disabled, loading, children, icon: Icon }: any
   </motion.button>
 );
 
-const GiftBoxReveal = ({ onOpen }: { onOpen: () => void }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isOpening, setIsOpening] = useState(false);
+const STICKERS_DATA = [
+  { emoji: "🎀", top: "12%", left: "10%", delay: 0 },
+  { emoji: "🧸", top: "8%", left: "45%", delay: 0.5 },
+  { emoji: "💖", top: "15%", left: "85%", delay: 1 },
+  { emoji: "✨", top: "45%", left: "8%", delay: 0.2 },
+  { emoji: "🌸", top: "50%", left: "88%", delay: 0.8 },
+  { emoji: "💌", top: "80%", left: "12%", delay: 1.2 },
+  { emoji: "🐰", top: "85%", left: "85%", delay: 0.4 },
+  { emoji: "🌷", top: "70%", left: "92%", delay: 0.7 },
+  { emoji: "🦋", top: "28%", left: "5%", delay: 1.5 },
+  { emoji: "🍓", top: "90%", left: "50%", delay: 0.3 },
+];
 
-  const handleOpen = () => {
-    setIsOpening(true);
-    setTimeout(() => {
-      onOpen();
-    }, 2000);
-  };
-
-  return (
-    <motion.div
-      key="unopened"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
-      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col items-center justify-center w-full max-w-lg z-10 relative"
-    >
-      <motion.div
-        animate={isOpening ? { 
-          scale: [1, 1.1, 0.9, 1.2, 0], 
-          rotate: [0, -5, 5, -5, 10, 0], 
-          filter: ["blur(0px)", "blur(0px)", "blur(0px)", "blur(10px)", "blur(20px)"],
-          opacity: [1, 1, 1, 1, 0] 
-        } : { y: [0, -10, 0] }}
-        transition={isOpening ? { duration: 1.8, ease: "easeInOut" } : { repeat: Infinity, duration: 4, ease: "easeInOut" }}
-        className="relative mb-14 cursor-pointer"
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        onClick={isOpening ? undefined : handleOpen}
-      >
-        {/* Glow Behind Box */}
-        <motion.div 
-          animate={{ scale: isHovered ? 1.2 : 1, opacity: isHovered ? 0.8 : 0.4 }} 
-          className="absolute inset-0 bg-gradient-to-tr from-[#FF4D8D] to-[#FFD6E7] rounded-full blur-[40px] transition-all duration-700" 
-        />
-        
-        {/* Glass Box */}
-        <div className="relative w-48 h-48 sm:w-56 sm:h-56 bg-white/40 backdrop-blur-2xl border border-white/70 rounded-[2.5rem] shadow-[0_30px_60px_rgba(255,77,141,0.15),inset_0_2px_20px_rgba(255,255,255,1)] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent" />
-          <motion.div animate={isHovered ? { scale: 1.1 } : { scale: 1 }} transition={{ duration: 0.4 }}>
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-[0_10px_20px_rgba(255,77,141,0.4)]">
-              <path d="M20 12V22H4V12" stroke="url(#gift-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M22 7H2V12H22V7Z" stroke="url(#gift-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 22V7" stroke="url(#gift-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 7H7.5C6.11929 7 5 5.88071 5 4.5C5 3.11929 6.11929 2 7.5 2C10.5 2 12 7 12 7Z" stroke="url(#gift-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 7H16.5C17.8807 7 19 5.88071 19 4.5C19 3.11929 17.8807 2 16.5 2C13.5 2 12 7 12 7Z" stroke="url(#gift-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <defs>
-                <linearGradient id="gift-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#FF4D8D"/>
-                  <stop offset="1" stopColor="#FF85B3"/>
-                </linearGradient>
-              </defs>
-            </svg>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      <div className="text-center px-6">
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-[#FF85B3] font-inter font-bold tracking-[0.2em] text-sm sm:text-base uppercase mb-4">
-          A Special Surprise
-        </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }} className="text-4xl sm:text-5xl font-playfair font-bold text-[#1F2937] leading-tight mb-6">
-          Anh đã chuẩn bị món quà<br />
-          <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3]">dành cho em...</span>
-        </motion.h1>
-      </div>
-
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }} className="mt-8">
-        <PremiumButton onClick={handleOpen} loading={isOpening} icon={Sparkles}>
-          Khám Phá Bí Mật
-        </PremiumButton>
-      </motion.div>
-    </motion.div>
-  );
-}
+const FloatingStickers = () => (
+  <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+    {STICKERS_DATA.map((sticker, i) => {
+      const duration = 3 + (i % 3);
+      return (
+        <motion.div
+          key={`sticker-${i}`}
+          className="absolute text-4xl sm:text-5xl drop-shadow-[0_10px_10px_rgba(255,77,141,0.2)] opacity-80"
+          style={{ top: sticker.top, left: sticker.left }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [-10, 15, -10],
+            scale: [0.95, 1.05, 0.95],
+          }}
+          transition={{
+            duration: duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: sticker.delay,
+          }}
+        >
+          {sticker.emoji}
+        </motion.div>
+      );
+    })}
+  </div>
+);
 
 // ==========================================
 // MAIN SCREEN
 // ==========================================
 
 export default function GiftScreen() {
-  const [isClaimed, setIsClaimed] = useState(false);
   const [isAccepted, setIsAccepted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleOpen = () => {
-    setIsClaimed(true);
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) audioRef.current.pause();
+      else audioRef.current.play().catch(e => console.log(e));
+      setIsPlaying(!isPlaying);
+    }
   };
 
   const handleAccept = () => {
@@ -181,7 +164,7 @@ export default function GiftScreen() {
     const interval: any = setInterval(function () {
       const timeLeft = animationEnd - Date.now();
       if (timeLeft <= 0) return clearInterval(interval);
-      
+
       const particleCount = (isGrand ? 60 : 30) * (timeLeft / duration);
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
@@ -189,106 +172,125 @@ export default function GiftScreen() {
   };
 
   useEffect(() => {
-    if (isClaimed) {
-      triggerConfetti(false);
+    // Trigger smaller confetti on initial load
+    triggerConfetti(false);
+
+    // Setup Audio
+    audioRef.current = new Audio("/romantic-song2.mp3"); // Đổi tên file nhạc thành gift-song.mp3
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+
+    // Thử auto-play khi vào trang
+    const playPromise = audioRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        setIsPlaying(true);
+      }).catch(error => {
+        console.log("Trình duyệt chặn auto-play, người dùng cần click nút âm nhạc:", error);
+      });
     }
-  }, [isClaimed]);
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
 
   return (
     <main className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#FFF9FB] selection:bg-[#FF4D8D]/30 py-12 px-4 sm:px-6 font-sans">
       <CinematicBackground />
+      <FloatingStickers />
+      <MusicControl isPlaying={isPlaying} toggleAudio={toggleAudio} />
 
       <AnimatePresence mode="wait">
-        {!isClaimed ? (
-          <GiftBoxReveal key="box" onOpen={handleOpen} />
-        ) : (
+        <motion.div
+          key="revealed"
+          className="w-full max-w-4xl relative z-20 flex flex-col items-center"
+        >
+          {/* Intense Light Rays Background */}
           <motion.div
-            key="revealed"
-            className="w-full max-w-4xl relative z-10 flex flex-col items-center"
-          >
-            {/* Intense Light Rays Background */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.5 }} 
-              animate={{ opacity: 0.4, scale: 1, rotate: 360 }} 
-              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-              className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] sm:w-[100vw] sm:h-[100vw] rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(255,77,141,0.2)_10deg,transparent_20deg,rgba(255,133,179,0.2)_30deg,transparent_40deg,rgba(255,214,231,0.2)_50deg,transparent_60deg)] pointer-events-none -z-10"
-            />
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 0.4, scale: 1, rotate: 360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] sm:w-[100vw] sm:h-[100vw] rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(255,77,141,0.2)_10deg,transparent_20deg,rgba(255,133,179,0.2)_30deg,transparent_40deg,rgba(255,214,231,0.2)_50deg,transparent_60deg)] pointer-events-none -z-10"
+          />
 
-            {/* Content Container */}
-            <div className="w-full flex flex-col items-center">
-              
-              {/* Image Reveal */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 50, filter: "blur(20px)" }}
-                animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                className="relative w-full max-w-xs sm:max-w-md aspect-square sm:aspect-[4/3] rounded-[2rem] p-3 bg-white/40 backdrop-blur-xl border border-white shadow-[0_40px_80px_rgba(255,77,141,0.2)] mb-10 group"
-              >
-                {/* Image Glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FF4D8D] to-[#FFD6E7] rounded-[2rem] blur-[20px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 -z-10" />
-                
-                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-inner">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={GIFT_IMAGE_URL} 
-                    alt="Gift Reveal" 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[2000ms] ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-                </div>
-              </motion.div>
+          {/* Content Container */}
+          <div className="w-full flex flex-col items-center">
 
-              {/* Text Reveal */}
-              <div className="text-center max-w-2xl px-4">
-                <motion.h2
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-                  className="text-4xl sm:text-5xl md:text-6xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] mb-6 drop-shadow-sm"
-                >
-                  {GIFT_NAME}
-                </motion.h2>
+            {/* Image Reveal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 50, filter: "blur(20px)" }}
+              animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              className="relative w-full max-w-xs sm:max-w-md aspect-square sm:aspect-[4/3] rounded-[2rem] p-3 bg-white/40 backdrop-blur-xl border border-white shadow-[0_40px_80px_rgba(255,77,141,0.2)] mb-10 group"
+            >
+              {/* Image Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#FF4D8D] to-[#FFD6E7] rounded-[2rem] blur-[20px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 -z-10" />
 
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1, delay: 1.5 }}
-                  className="text-lg sm:text-xl font-inter text-[#6B7280] leading-relaxed italic px-4"
-                >
-                  "{GIFT_MESSAGE}"
-                </motion.p>
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-inner">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={GIFT_IMAGE_URL}
+                  alt="Gift Reveal"
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[2000ms] ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               </div>
+            </motion.div>
 
-              {/* Action Reveal */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
+            {/* Text Reveal */}
+            <div className="text-center max-w-2xl px-4">
+              <motion.h2
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 2.2 }}
-                className="mt-12"
+                transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+                className="text-4xl sm:text-5xl md:text-6xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] mb-6 drop-shadow-sm"
               >
-                {!isAccepted ? (
-                  <PremiumButton onClick={handleAccept} icon={Heart}>
-                    Chấp Nhận Quà Tặng
-                  </PremiumButton>
-                ) : (
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", bounce: 0.5 }}
-                    className="flex items-center gap-4 bg-white/80 backdrop-blur-2xl px-10 py-5 rounded-full border border-white shadow-[0_20px_50px_rgba(255,77,141,0.2)]"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] flex items-center justify-center shadow-inner">
-                      <CheckCircle2 className="text-white" size={24} />
-                    </div>
-                    <span className="font-playfair font-bold text-xl sm:text-2xl text-[#1F2937] italic">
-                      Đã Nhận Quà Thành Công
-                    </span>
-                  </motion.div>
-                )}
-              </motion.div>
+                {GIFT_NAME}
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1.5 }}
+                className="text-lg sm:text-xl font-inter text-[#6B7280] leading-relaxed italic px-4"
+              >
+                "{GIFT_MESSAGE}"
+              </motion.p>
             </div>
-          </motion.div>
-        )}
+
+            {/* Action Reveal */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 2.2 }}
+              className="mt-12"
+            >
+              {!isAccepted ? (
+                <PremiumButton onClick={handleAccept} icon={Heart}>
+                  Chấp Nhận Quà Tặng
+                </PremiumButton>
+              ) : (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", bounce: 0.5 }}
+                  className="flex items-center gap-4 bg-white/80 backdrop-blur-2xl px-10 py-5 rounded-full border border-white shadow-[0_20px_50px_rgba(255,77,141,0.2)]"
+                >
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] flex items-center justify-center shadow-inner">
+                    <CheckCircle2 className="text-white" size={24} />
+                  </div>
+                  <span className="font-playfair font-bold text-xl sm:text-2xl text-[#1F2937] italic">
+                    Đã Nhận Quà Thành Công
+                  </span>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </motion.div>
       </AnimatePresence>
     </main>
   );

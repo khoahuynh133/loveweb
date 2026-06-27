@@ -41,8 +41,8 @@ const CinematicBackground = ({ scene }: { scene: number }) => {
         transition={{ duration: 2 }}
         className="absolute inset-0"
       >
-        <motion.div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#FFE4EC] mix-blend-multiply blur-[120px] opacity-70" animate={{ x: [0, 30, 0], y: [0, 40, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFD6E7] mix-blend-multiply blur-[140px] opacity-50" animate={{ x: [0, -30, 0], y: [0, -40, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#FFE4EC]/70 blur-[60px]" animate={{ x: [0, 30, 0], y: [0, 40, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFD6E7]/50 blur-[60px]" animate={{ x: [0, -30, 0], y: [0, -40, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
       </motion.div>
 
       <motion.div
@@ -55,7 +55,7 @@ const CinematicBackground = ({ scene }: { scene: number }) => {
         <motion.div className="absolute top-[20%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-[#FF4D8D]/10 blur-[120px] opacity-40" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} />
 
         {/* Floating Ambient Light Orbs */}
-        {[...Array(15)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={`orb-${i}`}
             className="absolute rounded-full bg-white/20 blur-[2px]"
@@ -155,8 +155,7 @@ export default function LetterScreen() {
   // 2: Letter Typewriter
   // 3: Photos Table
   // 4: Grand Finale (Heart)
-  // 5: Button appears
-  // 6: Transition Light Fade
+  // 5: Transition Light Fade
   const [scene, setScene] = useState(1);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -221,7 +220,8 @@ export default function LetterScreen() {
 
   useEffect(() => {
     if (scene === 4) {
-      setTimeout(() => setScene(5), 3000); // Hiện trái tim 3s rồi hiện nút
+      // Hiện trái tim 3s rồi hiện nút
+      setTimeout(() => setScene(5), 3000); 
     }
   }, [scene]);
 
@@ -335,6 +335,7 @@ export default function LetterScreen() {
             key="scene-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="flex flex-col items-center justify-center z-20 h-screen absolute"
           >
             {/* Glowing Heart */}
@@ -348,26 +349,34 @@ export default function LetterScreen() {
               <Heart size={80} className="text-[#FF4D8D] fill-[#FF4D8D] drop-shadow-[0_0_40px_rgba(255,77,141,0.8)]" />
             </motion.div>
 
-            {/* Premium Button */}
+            {/* Premium Button & Quote */}
             <AnimatePresence>
               {scene === 5 && (
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, ease: "easeOut" }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative group cursor-pointer"
-                  onClick={finishAndTransition}
+                  className="flex flex-col items-center gap-8"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] rounded-full blur-[20px] opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
-                  <div className="relative px-12 py-5 bg-white/10 backdrop-blur-xl border border-white/30 rounded-full overflow-hidden flex items-center gap-3">
-                    <div className="absolute inset-0 translate-x-[-150%] group-hover:translate-x-[150%] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] transition-transform duration-[1200ms] ease-in-out" />
-                    <Sparkles className="text-white" size={20} />
-                    <span className="text-white font-inter font-light tracking-[0.2em] uppercase text-sm sm:text-base">
-                      Khám Phá Món Quà
-                    </span>
-                  </div>
+                  <p className="font-playfair text-[#888888] text-lg sm:text-xl italic text-center max-w-md px-6 leading-relaxed">
+                    "Khép lại những khoảnh khắc tuyệt vời này, anh có một điều bất ngờ nhỏ bé dành riêng cho người con gái anh yêu..."
+                  </p>
+                  
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative group cursor-pointer mx-auto"
+                    onClick={finishAndTransition}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#FF4D8D] to-[#FF85B3] rounded-full blur-[20px] opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
+                    <div className="relative px-12 py-5 bg-white/10 backdrop-blur-xl border border-white/30 rounded-full overflow-hidden flex items-center gap-3">
+                      <div className="absolute inset-0 translate-x-[-150%] group-hover:translate-x-[150%] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] transition-transform duration-[1200ms] ease-in-out" />
+                      <Sparkles className="text-white" size={20} />
+                      <span className="text-white font-inter font-light tracking-[0.2em] uppercase text-sm sm:text-base">
+                        Món Quà Của Anh
+                      </span>
+                    </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -385,7 +394,7 @@ export default function LetterScreen() {
             transition={{ duration: 1.5, ease: "easeIn" }}
             className="fixed inset-0 bg-white z-[100] flex items-center justify-center"
           >
-            <div className="w-[200vw] h-[200vw] rounded-full bg-gradient-to-tr from-[#FF4D8D]/20 to-[#FF85B3]/20 blur-[100px] animate-spin" />
+            <div className="w-[150vw] h-[150vw] rounded-full bg-gradient-to-tr from-[#FF4D8D]/20 to-[#FF85B3]/20 blur-[50px] animate-spin" />
           </motion.div>
         )}
       </AnimatePresence>

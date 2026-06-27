@@ -22,16 +22,16 @@ const CinematicAuroraBackground = ({ isSuccess }: { isSuccess: boolean }) => (
       transition={{ duration: 2 }}
       className="absolute inset-0"
     >
-      {/* Slow Moving Aurora Mesh */}
-      <motion.div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFE4EC] mix-blend-multiply blur-[120px] opacity-60" animate={{ x: [0, 40, 0], y: [0, 50, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
-      <motion.div className="absolute bottom-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[#FFD6E7] mix-blend-multiply blur-[140px] opacity-50" animate={{ x: [0, -40, 0], y: [0, -50, 0] }} transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }} />
-      <motion.div className="absolute top-[30%] left-[30%] w-[50vw] h-[50vw] rounded-full bg-[#FF85B3]/20 mix-blend-multiply blur-[100px] opacity-40" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
+      {/* Slow Moving Aurora Mesh (Optimized) */}
+      <motion.div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#FFE4EC]/60 blur-[60px]" animate={{ x: [0, 40, 0], y: [0, 50, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} />
+      <motion.div className="absolute bottom-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[#FFD6E7]/50 blur-[60px]" animate={{ x: [0, -40, 0], y: [0, -50, 0] }} transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }} />
+      <motion.div className="absolute top-[30%] left-[30%] w-[50vw] h-[50vw] rounded-full bg-[#FF85B3]/20 blur-[50px]" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} />
       
       {/* Subtle Noise Texture (CSS background) */}
       <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/stardust.png')" }} />
       
       {/* Tiny Slow Sparkles */}
-      {[...Array(12)].map((_, i) => (
+      {[...Array(6)].map((_, i) => (
         <motion.div
           key={`sparkle-${i}`}
           className="absolute rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,1)]"
